@@ -1,3 +1,6 @@
+import {existsSync,mkdirSync} from 'fs'
+import moment from 'moment';
+
 export const config = {
     //
     // ====================
@@ -50,9 +53,20 @@ export const config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        browserName: 'chrome'
-    }],
+    capabilities: [
+        {
+            browserName: 'chrome',    // or 'chromium'
+            'goog:chromeOptions': {
+                args: ['--headless', '--disable-gpu', '--window-size=1280,800']
+            }
+      }, {
+        
+        browserName: 'firefox',
+        'moz:firefoxOptions': {
+          args: ['-headless', '--window-size=1280,800']
+        }
+      }
+    ],
 
     //
     // ===================
@@ -85,7 +99,7 @@ export const config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://localhost',
+    baseUrl: 'http://localhost:8080',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -115,10 +129,10 @@ export const config = {
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // The number of times to retry the entire specfile when it fails as a whole
-    // specFileRetries: 1,
+    specFileRetries: 1,
     //
 
-    
+
     // Delay in seconds between the spec file retry attempts
     // specFileRetriesDelay: 0,
     //
@@ -233,6 +247,22 @@ export const config = {
      */
     // afterTest: function(test, context, { error, result, duration, passed, retries }) {
     // },
+     afterTest: async (test, context, result) => {
+        // take a screenshot anytime a test fails and throws an error
+        if (result.error) {
+          console.log(`Screenshot for the failed test ${test.title} is saved`);
+          const dataTime = moment().format('YYYY-MM-DD at hh-mm-ss')
+          const filename = `${test.title}_${dataTime}.png`;
+          const dirPath = './artifacts/screenshots/';
+      
+          if (!existsSync(dirPath)) {
+            mkdirSync(dirPath, {
+              recursive: true,
+            });
+          }
+          await browser.saveScreenshot(dirPath + filename);
+        }
+      },
 
 
     /**
