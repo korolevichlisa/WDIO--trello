@@ -13,10 +13,10 @@ describe('Edit profile', () => {
         await startPage.open()
         await startPage.header.item('login').click()
         await browser.pause(2000)
-        await signInPage.form.item('username').setValue('jijis24506@orsbap.com')
+        await signInPage.form.item('username').setValue(process.env.user_email)
         await signInPage.form.btn.click()
         await browser.pause(2000)
-        await signInPage.form.item('password').setValue('Crp8xmH8GL=39Fs')
+        await signInPage.form.item('password').setValue(process.env.user_pass)
         await signInPage.form.btn.click()
         await browser.pause(2000)
     })
@@ -25,10 +25,7 @@ describe('Edit profile', () => {
         await homePage.header.item('userName').click()
         await $('//a[@data-testid="account-menu-settings"]').scrollIntoView({block:'center'})
         await $('//a[@data-testid="account-menu-settings"]').click()
-
         await browser.pause(2000)
-        
-        // await expect(browser).toHaveUrl('https://trello.com/u/jijis24506/account')
         await expect(await $('//div/descendant::span[@class="GxX8JLMG4SGAvQ"]').getText()).toEqual('test_user')
     })
 
