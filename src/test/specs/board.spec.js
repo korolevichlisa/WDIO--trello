@@ -13,12 +13,25 @@ describe('Operations with board elements', () => {
         await startPage.open()
         await startPage.header.item('login').click()
         await browser.pause(2000)
-        await signInPage.form.item('username').setValue('jijis24506@orsbap.com')
+        await signInPage.form.item('username').setValue(process.env.user_email)
         await signInPage.form.btn.click()
         await browser.pause(2000)
-        await signInPage.form.item('password').setValue('Crp8xmH8GL=39Fs')
+        await signInPage.form.item('password').setValue(process.env.user_pass)
         await signInPage.form.btn.click()
         await browser.pause(2000)
+    })
+
+    after(async () => {
+        await boardPage.workSpace.boardHeader('menuBtn').click()
+        await boardPage.workSpace.menuBoard('closeBoard').scrollIntoView({block:'end'})
+        await boardPage.workSpace.menuBoard('closeBoard').click()
+        await boardPage.workSpace.menuBoard('confirmCloseBoard').click()
+        await boardPage.workSpace.menuBoard('deleteBoard').scrollIntoView({block:'end'})
+        await boardPage.workSpace.menuBoard('deleteBoard').click()
+        await boardPage.workSpace.menuBoard('confirmDelBoard').click()
+        await browser.pause(2000)
+        await expect(await homePage.header.item('userName').isExisting()).toEqual(true)
+
     })
 
 
@@ -30,7 +43,7 @@ describe('Operations with board elements', () => {
         await homePage.popUp.createMenuPopOver('submitBoardBtn').click()
         await browser.pause(2000)
     
-        await expect(await $('//h1[contains(@data-testid, "board-name-display")]').getText()).toEqual('test-board')
+        await expect(await boardPage.workSpace.boardHeader('title').getText()).toEqual('test-board')
     })
 
     it('Create a list @e2e', async () => {
@@ -39,7 +52,7 @@ describe('Operations with board elements', () => {
         await boardPage.workSpace.listItem('btn').click()
         await browser.pause(2000)
     
-        await expect(await $('(//h2[@data-testid="list-name"])[last()]').getText()).toEqual('test log')
+        await expect(await boardPage.workSpace.lastListTitle.getText()).toEqual('test log')
     })
     it('Create a card @e2e', async () => {
         await boardPage.workSpace.createCard.click()
@@ -60,20 +73,5 @@ describe('Operations with board elements', () => {
         await $("//a[contains(@class,'board-menu-header-close-button ')]").click()
         await expect(changedPermission).not.toEqual(startPermission)
     })
-    it('Delete a board @e2e', async () => {
-        await boardPage.workSpace.boardHeader('menuBtn').click()
-        await boardPage.workSpace.menuBoard('closeBoard').scrollIntoView({block:'end'})
-        await boardPage.workSpace.menuBoard('closeBoard').click()
-        
-        await boardPage.workSpace.menuBoard('confirmCloseBoard').click()
-        await boardPage.workSpace.menuBoard('deleteBoard').scrollIntoView({block:'end'})
-        await boardPage.workSpace.menuBoard('deleteBoard').click()
-        await boardPage.workSpace.menuBoard('confirmDelBoard').click()
-
-        await browser.pause(2000)
-        await expect(await homePage.header.item('userName').isExisting()).toEqual(true)
-
-    })
-
-    
+      
 })

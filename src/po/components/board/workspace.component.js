@@ -3,6 +3,10 @@ export class WorkspaceComponent{
         return $('//button[@data-testid="list-composer-button"]')
     }
 
+    get lastListTitle() {
+        return $('(//h2[@data-testid="list-name"])[last()]')
+    }
+
     listItem(param) {
        const selectors = {
            textArea: 'textarea[@data-testid="list-name-textarea"]',
@@ -26,9 +30,11 @@ export class WorkspaceComponent{
     boardHeader(param) {
         const selectors = {
             menuBtn: 'span[@data-testid="OverflowMenuHorizontalIcon"]',
-            filterBtn:'button[@data-testid="filter-popover-button"]'
+            filterBtn: 'button[@data-testid="filter-popover-button"]',
+            title:'h1[contains(@data-testid, "board-name-display")]'
         }
-        return $(`//span[@class="leC8WfkzmokiUl"]/descendant::${selectors[param]}`)
+        return $(`//div[@class="RPO6eTW4FLJhI0"]/descendant::${selectors[param]}`)
+        // return $(`//span[@class="leC8WfkzmokiUl"]/descendant::${selectors[param]}`)
     }
 
     menuBoard(param) {
