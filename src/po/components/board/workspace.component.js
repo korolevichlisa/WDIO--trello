@@ -19,6 +19,10 @@ export class WorkspaceComponent{
         return $('(//button[@data-testid="list-add-card-button"])[last()]')
     }
 
+    get createdCardName() {
+        return $('//a[@data-testid="card-name"]')
+    }
+
     cardItem(param) {
         const selectors = {
             textArea:'textarea[@data-testid="list-card-composer-textarea"]',
@@ -42,12 +46,22 @@ export class WorkspaceComponent{
             closeBoard: '//a[contains(@class,"js-close-board")]',
             confirmCloseBoard: '//input[@data-testid="close-board-confirm-button"]',
             deleteBoard: '//button[@data-testid="close-board-delete-board-button"]',
-            confirmDelBoard:'//button[@data-testid="close-board-delete-board-confirm-button"]',
+            confirmDelBoard: '//button[@data-testid="close-board-delete-board-confirm-button"]',
             settings: '//a[contains(@class," js-open-settings")]',
-            permissions: '//a[@data-testid="add-remove-members-item"]',
-            permissionsForAdmins: '//a[@name="admins"]'
+            permissionsAddRemoveMembers: '//a[@data-testid="add-remove-members-item"]',
+            permissionsForAdminsAddRemoveMembers: '//a[@name="admins"]',
+            addRemoveMembers: '//a[@data-testid="add-remove-members-item"]/descendant::span[@class="Ok1H3hZ4AitKti"]',
+            closeMenuPopUp: '//a[contains(@class,"board-menu-header-close-button")]'
         }
         return $(`${selectors[param]}`)
+    }
+
+    filterPopUp(param) {
+        const selectors = {
+            input: 'input[contains(@class,"nch-textfield__input")]',
+            closeBtn: 'button[@data-testid="popover-close"]'
+        }
+        return $(`//section[@class="rX4pAv5sWHFNjp js-react-root"]/descendant::${selectors[param]}`)
     }
 }
 

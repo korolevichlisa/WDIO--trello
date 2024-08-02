@@ -4,10 +4,10 @@ import { StartPage } from "../../po/pages/start.page.js"
 import { BoardPage } from "../../po/pages/board.page.js"
 
 
-const startPage = new StartPage
-const signInPage = new SignIn
-const homePage = new HomePage
-const boardPage = new BoardPage
+const startPage = new StartPage()
+const signInPage = new SignIn()
+const homePage = new HomePage()
+const boardPage = new BoardPage()
 
 
 describe('Search board', () => {
@@ -42,10 +42,10 @@ describe('Search board', () => {
     it('Create 3 boards @search', async () => {
         for (let i = 1; i <= 2; i++){
             await homePage.header.item('createMenuBtn').click()
-            await homePage.popUp.createMenuPopOver('createBoardBtn').click()
+            await homePage.popUp.createBoardMenuPopOver('createBoardBtn').click()
             await browser.pause(2000)
-            await homePage.popUp.createMenuPopOver('nameBoard').setValue('test-board' + i)
-            await homePage.popUp.createMenuPopOver('submitBoardBtn').click()
+            await homePage.popUp.createBoardMenuPopOver('nameBoard').setValue('test-board' + i)
+            await homePage.popUp.createBoardMenuPopOver('submitBoardBtn').click()
             await browser.pause(2000)
         }
     })

@@ -3,10 +3,10 @@ import { HomePage } from "../../po/pages/home.page.js"
 import { SignIn } from "../../po/pages/signInUp.page.js"
 import { StartPage } from"../../po/pages/start.page.js" 
 
-const startPage = new StartPage
-const signInPage = new SignIn
-const homePage = new HomePage
-const boardPage = new BoardPage
+const startPage = new StartPage()
+const signInPage = new SignIn()
+const homePage = new HomePage()
+const boardPage = new BoardPage()
 
 describe('Card filtering', () => {
     before(async () => {
@@ -15,7 +15,7 @@ describe('Card filtering', () => {
         await browser.pause(2000)
         await signInPage.form.item('username').setValue(process.env.user_email)
         await signInPage.form.btn.click()
-        await browser.pause(2000)
+        await browser.pause(2500)
         await signInPage.form.item('password').setValue(process.env.user_pass)
         await signInPage.form.btn.click()
         await browser.pause(2000)
@@ -36,13 +36,12 @@ describe('Card filtering', () => {
 
     it('Create a board @filter', async () => {
         await homePage.header.item('createMenuBtn').click()
-        await homePage.popUp.createMenuPopOver('createBoardBtn').click()
+        await homePage.popUp.createBoardMenuPopOver('createBoardBtn').click()
         await browser.pause(2000)
-        await homePage.popUp.createMenuPopOver('nameBoard').setValue('test-board')
-        await homePage.popUp.createMenuPopOver('submitBoardBtn').click()
+        await homePage.popUp.createBoardMenuPopOver('nameBoard').setValue('test-board')
+        await homePage.popUp.createBoardMenuPopOver('submitBoardBtn').click()
         await browser.pause(2000)
-    
-        await expect(await $('//h1[contains(@data-testid, "board-name-display")]').getText()).toEqual('test-board')
+        await expect(await boardPage.workSpace.boardHeader('title').getText()).toEqual('test-board')
     })
     
     it('Create 5 cards @filter', async () => {
@@ -57,9 +56,9 @@ describe('Card filtering', () => {
 
     it('Filter a card @filter', async () => {
         await boardPage.workSpace.boardHeader('filterBtn').click()
-        await $('//input[contains(@class,"nch-textfield__input")]').setValue('test')
+        await boardPage.workSpace.filterPopUp('input').setValue('test')
         await browser.pause(2000)
-        await $('//button[@data-testid="popover-close"]').click()
+        await boardPage.workSpace.filterPopUp('closeBtn').click()
         await browser.pause(2000)
         
         const result = await $$('//ol[@data-testid="list-cards"]/descendant::li')
