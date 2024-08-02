@@ -3,7 +3,7 @@ import { HeaderHomeComponent } from "../components/header.home.component.js";
 
 export class BoardPage{
     constructor() {
-        this.header = new HeaderHomeComponent
-        this.workSpace = new WorkspaceComponent
+        this.header = new HeaderHomeComponent()
+        this.workSpace = new WorkspaceComponent()
     }
 }

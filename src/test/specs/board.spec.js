@@ -3,10 +3,10 @@ import { HomePage } from "../../po/pages/home.page.js"
 import { SignIn } from "../../po/pages/signInUp.page.js"
 import { StartPage } from"../../po/pages/start.page.js" 
 
-const startPage = new StartPage
-const signInPage = new SignIn
-const homePage = new HomePage
-const boardPage = new BoardPage
+const startPage = new StartPage()
+const signInPage = new SignIn()
+const homePage = new HomePage()
+const boardPage = new BoardPage()
 
 describe('Operations with board elements', () => {
     before(async () => {
@@ -37,10 +37,10 @@ describe('Operations with board elements', () => {
 
     it('Create a board @e2e', async () => {
         await homePage.header.item('createMenuBtn').click()
-        await homePage.popUp.createMenuPopOver('createBoardBtn').click()
+        await homePage.popUp.createBoardMenuPopOver('createBoardBtn').click()
         await browser.pause(2000)
-        await homePage.popUp.createMenuPopOver('nameBoard').setValue('test-board')
-        await homePage.popUp.createMenuPopOver('submitBoardBtn').click()
+        await homePage.popUp.createBoardMenuPopOver('nameBoard').setValue('test-board')
+        await homePage.popUp.createBoardMenuPopOver('submitBoardBtn').click()
         await browser.pause(2000)
     
         await expect(await boardPage.workSpace.boardHeader('title').getText()).toEqual('test-board')
@@ -60,17 +60,17 @@ describe('Operations with board elements', () => {
         await boardPage.workSpace.cardItem('btn').click()
         await browser.pause(2000)
     
-        await expect(await $('//a[@data-testid="card-name"]').getText()).toEqual('test task')
+        await expect(await boardPage.workSpace.createdCardName.getText()).toEqual('test task')
     })
     it('Chage a permissions @e2e', async () => {
         await boardPage.workSpace.boardHeader('menuBtn').click()
         await boardPage.workSpace.menuBoard('settings').click()
-        const startPermission = await $('//a[@data-testid="add-remove-members-item"]/descendant::span[@class="Ok1H3hZ4AitKti"]').getText()
-        await boardPage.workSpace.menuBoard('permissions').click()
-        await boardPage.workSpace.menuBoard('permissionsForAdmins').click()
+        const startPermission = await boardPage.workSpace.menuBoard('addRemoveMembers').getText()
+        await boardPage.workSpace.menuBoard('permissionsAddRemoveMembers').click()
+        await boardPage.workSpace.menuBoard('permissionsForAdminsAddRemoveMembers').click()
         await browser.pause(2000)
-        const changedPermission = await $('//a[@data-testid="add-remove-members-item"]/descendant::span[@class="Ok1H3hZ4AitKti"]').getText()
-        await $("//a[contains(@class,'board-menu-header-close-button ')]").click()
+        const changedPermission = await boardPage.workSpace.menuBoard('addRemoveMembers').getText()
+        await boardPage.workSpace.menuBoard('closeMenuPopUp').click()
         await expect(changedPermission).not.toEqual(startPermission)
     })
       
